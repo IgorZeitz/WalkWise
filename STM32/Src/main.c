@@ -45,7 +45,7 @@ COM_InitTypeDef BspCOMInit;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+uint8_t tx_buffer[27]  = "BLE-UART test\n\r";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -120,6 +120,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_UART_Transmit(&huart1, tx_buffer, 27, 10);
+	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
