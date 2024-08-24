@@ -92,13 +92,15 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET); // LED - signaling successful flashing
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	    HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_0);
-	    HAL_Delay(100);
+
   }
   /* USER CODE END 3 */
 }

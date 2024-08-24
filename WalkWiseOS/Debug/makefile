@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := uC-test
+BUILD_ARTIFACT_NAME := WalkWiseOS
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-uC-test.elf \
+WalkWiseOS.elf \
 
 MAP_FILES += \
-uC-test.map \
+WalkWiseOS.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-uC-test.list \
+WalkWiseOS.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: uC-test.elf secondary-outputs
+main-build: WalkWiseOS.elf secondary-outputs
 
 # Tool invocations
-uC-test.elf uC-test.map: $(OBJS) $(USER_OBJS) C:\Users\igorz\OneDrive\Pulpit\Stm32_Udemy\My_workspace\host\uC-test\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "uC-test.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\igorz\OneDrive\Pulpit\Stm32_Udemy\My_workspace\host\uC-test\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="uC-test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+WalkWiseOS.elf WalkWiseOS.map: $(OBJS) $(USER_OBJS) C:\Users\igorz\OneDrive\Pulpit\Stm32_Udemy\My_workspace\host\WalkWiseOS\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "WalkWiseOS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\igorz\OneDrive\Pulpit\Stm32_Udemy\My_workspace\host\WalkWiseOS\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="WalkWiseOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-uC-test.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "uC-test.list"
+WalkWiseOS.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "WalkWiseOS.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout uC-test.elf uC-test.list uC-test.map
+	-$(RM) WalkWiseOS.elf WalkWiseOS.list WalkWiseOS.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
