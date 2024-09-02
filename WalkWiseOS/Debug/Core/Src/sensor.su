@@ -1,0 +1,4 @@
+../Core/Src/sensor.c:63:5:calibration	8	static
+../Core/Src/sensor.c:70:6:writeMux	48	static
+../Core/Src/sensor.c:77:5:readMux	48	static
+../Core/Src/sensor.c:94:6:activated_sensor	24	static
