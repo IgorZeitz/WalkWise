@@ -1,12 +1,16 @@
 package org.example;
 
 import javax.bluetooth.*;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Vector;
 
 public class Communication {
 
-    public static Vector<RemoteDevice> availableDevices = new Vector<>(); //Vektor wszystkich dostępnych urządzeń bt
+    public static Vector<RemoteDevice> availableDevices = new Vector<>(); // All found BT devices storage
 
     int[][] receivedData;
 
@@ -34,10 +38,10 @@ public class Communication {
             @Override
             public void deviceDiscovered(RemoteDevice remoteDevice, DeviceClass deviceClass) {
                 try {
-                    System.out.println("Znaleziono urzadzenie: " + remoteDevice);
+                    System.out.println("Found device: " + remoteDevice);
                     availableDevices.add(remoteDevice);
                 } catch (Exception e){
-                    e.printStackTrace();
+                    System.out.println("No more available devices");
                 }
 
             }
@@ -56,33 +60,58 @@ public class Communication {
             public void inquiryCompleted(int i) {
                 synchronized (inquiryLock){
                     inquiryLock.notify();
-                    System.out.println("Zakończyło się szukanie!!!!!");
+                    System.out.println("Searching ended!");
                 }
             }
         };
 
-        System.out.println("Start szukania:\n");
+        System.out.println("Searching started:\n");
         discoveryAgent.startInquiry(DiscoveryAgent.GIAC, listener);
         System.out.println(availableDevices);
 
-        //TO BLOKUJE PRORAM a bez tego nie wyszka urzadzeń!!!
-        //  Jak wyjsc z wait chyba ze inquiryCompleted ma zsynchronizowac wyjscie z listener.wait?????
+        //New object inquiryLock helped with synchronizing .wait(), Don't know if this is a good solution
         synchronized (inquiryLock){
             try {
                 inquiryLock.wait();
             } catch (InterruptedException e){
-                System.out.println(availableDevices);
+                //System.out.println(availableDevices);
+                System.out.println("Tu cos nie dziala");
             }
         }
 
-        System.out.println(availableDevices);
+       // System.out.println(availableDevices);
 
-       System.out.println(availableDevices.get(1).getFriendlyName(false));
-
-    }
-
-    public static void connectToDevice(){
+      // System.out.println(availableDevices.get(1).getFriendlyName(false));
 
     }
 
+/*    public static void connectToDevice(RemoteDevice remoteDevice){
+        try {
+            // UUID dla usługi Serial Port Profile (SPP)
+            UUID uuid = new UUID(0x1101);  // Standard RFCOMM
+            String connectionURL = "btspp://" + remoteDevice.getBluetoothAddress() + ":" + uuid.toString() + ";authenticate=false;encrypt=false;";
+
+            // Nawiązanie połączenia
+            StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
+
+            // Pobierz strumienie wejścia/wyjścia
+            InputStream inputStream = streamConnection.openInputStream();
+            OutputStream outputStream = streamConnection.openOutputStream();
+
+            System.out.println("Połączono z urządzeniem: " + remoteDevice.getFriendlyName(false));
+
+            // Możesz teraz komunikować się z urządzeniem za pomocą strumieni
+            // Przykład wysyłania danych
+            outputStream.write("Hello from Java Bluetooth!".getBytes());
+
+            // Zamknij połączenie po zakończeniu
+            inputStream.close();
+            outputStream.close();
+            streamConnection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+ */
 }
