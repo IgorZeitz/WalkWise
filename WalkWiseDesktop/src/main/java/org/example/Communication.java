@@ -1,11 +1,7 @@
 package org.example;
 
 import javax.bluetooth.*;
-import javax.microedition.io.Connector;
-import javax.microedition.io.StreamConnection;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Vector;
 
 public class Communication {
@@ -18,7 +14,8 @@ public class Communication {
 
     }
 
-    public static void findDevice() throws IOException, InterruptedException {
+    // Finding all available bt devices
+    public static void findAllDevice() throws IOException, InterruptedException {
         //Host device info
         LocalDevice myDevice = LocalDevice.getLocalDevice();
         String myDeviceAddress = myDevice.getBluetoothAddress();
@@ -83,6 +80,22 @@ public class Communication {
 
       // System.out.println(availableDevices.get(1).getFriendlyName(false));
 
+    }
+
+    // Finding if the device that we want to connect to, is available
+    public static void findSpecificDevice(String searchingDeviceName) throws IOException {
+
+        String btName;    // String for comparing bt devices
+        int AllFoundBtDevices = Communication.availableDevices.size();
+
+        for(int i=0; i<AllFoundBtDevices; i++){ // check if there's
+            btName = Communication.availableDevices.get(i).getFriendlyName(false);
+            if(btName.equals(searchingDeviceName)){
+                System.out.println("Found device: " + btName);
+                //TO DO: Connect to the device
+                //  Communication.connectToDevice
+            }
+        }
     }
 
 /*    public static void connectToDevice(RemoteDevice remoteDevice){
