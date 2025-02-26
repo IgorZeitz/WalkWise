@@ -13,6 +13,20 @@ jar {
 
 repositories {
     mavenCentral()
+
+//    maven {
+//        url "https://openhab.jfrog.io/artifactory/libs-release/"
+//    }
+//    maven {
+//        url = uri("https://dl.bintray.com/openhab/mvn/")
+//    }
+
+//    maven {
+//        url "https://repo.eclipse.org/content/repositories/kura/"
+//    }
+
+   // maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+
 }
 
 dependencies {
@@ -20,6 +34,20 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     // https://mvnrepository.com/artifact/io.ultreia/bluecove
     implementation group: 'io.ultreia', name: 'bluecove', version: '2.1.1'
+
+    //implementation 'com.github.movisens:smartgattlib:1.0.0'
+
+// https://mvnrepository.com/artifact/intel-iot-devkit/tinyb
+//    implementation group: 'intel-iot-devkit', name: 'tinyb', version: '0.5.0'
+
+
+    //Dariusz Seweryn Lib
+   // implementation 'com.polidea.rxandroidble3:rxandroidble:1.18.1'
+
+    //kura
+//    implementation 'org.eclipse.kura:kura-core:5.1.0'
+//    implementation 'org.eclipse.kura:kura-api:5.1.0'
+//    implementation 'org.eclipse.kura:kura-ble:5.1.0'
 
 }
 

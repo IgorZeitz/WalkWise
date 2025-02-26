@@ -1,7 +1,11 @@
 package org.example;
 
 import javax.bluetooth.*;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Vector;
 
 public class Communication {
@@ -15,6 +19,7 @@ public class Communication {
     }
 
     // Finding all available bt devices
+    // BUG!!! It searches only paired devices not those that are really available at the moment!!!
     public static void findAllDevice() throws IOException, InterruptedException {
         //Host device info
         LocalDevice myDevice = LocalDevice.getLocalDevice();
@@ -63,18 +68,25 @@ public class Communication {
         };
 
         System.out.println("Searching started:\n");
-        discoveryAgent.startInquiry(DiscoveryAgent.GIAC, listener);
+        synchronized (inquiryLock) {
+            boolean inquiryStarted = discoveryAgent.startInquiry(DiscoveryAgent.GIAC, listener);  // Uruchomienie skanowania
+            if (inquiryStarted) {
+                inquiryLock.wait();  // Czekaj, aż wyszukiwanie się zakończy
+            } else {
+                System.out.println("Failed to start device inquiry.");
+            }
+        }
         System.out.println(availableDevices);
 
         //New object inquiryLock helped with synchronizing .wait(), Don't know if this is a good solution
-        synchronized (inquiryLock){
+  /*      synchronized (inquiryLock){
             try {
                 inquiryLock.wait();
             } catch (InterruptedException e){
                 //System.out.println(availableDevices);
                 System.out.println("Tu cos nie dziala");
             }
-        }
+      } */
 
        // System.out.println(availableDevices);
 
@@ -83,48 +95,59 @@ public class Communication {
     }
 
     // Finding if the device that we want to connect to, is available
-    public static void findSpecificDevice(String searchingDeviceName) throws IOException {
+    public static RemoteDevice findSpecificDevice(String searchingDeviceName) throws IOException {
 
         String btName;    // String for comparing bt devices
+        RemoteDevice foundDevice = null; // ??? czy ten null tu
         int AllFoundBtDevices = Communication.availableDevices.size();
 
         for(int i=0; i<AllFoundBtDevices; i++){ // check if there's
-            btName = Communication.availableDevices.get(i).getFriendlyName(false);
+            btName = availableDevices.get(i).getFriendlyName(false);
             if(btName.equals(searchingDeviceName)){
                 System.out.println("Found device: " + btName);
+                foundDevice = Communication.availableDevices.get(i);
+                return foundDevice;
                 //TO DO: Connect to the device
                 //  Communication.connectToDevice
             }
         }
+        return foundDevice;
     }
 
-/*    public static void connectToDevice(RemoteDevice remoteDevice){
+
+                         //NIE DZIAlA!!! Działa ale wywala bład
+    public static void connectToDevice(RemoteDevice deviceToConnect){
         try {
             // UUID dla usługi Serial Port Profile (SPP)
             UUID uuid = new UUID(0x1101);  // Standard RFCOMM
-            String connectionURL = "btspp://" + remoteDevice.getBluetoothAddress() + ":" + uuid.toString() + ";authenticate=false;encrypt=false;";
+            String connectionURL = "btspp://" + deviceToConnect.getBluetoothAddress() + ":1"  + ";authenticate=false;encrypt=false;master=false;"; //łączy
+
+            //String mUUID = uuid.toString();
+
+            //StreamConnection connection = (StreamConnection) Connector.open(mUUID);
 
             // Nawiązanie połączenia
-            StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL);
-
+            StreamConnection streamConnection = (StreamConnection) Connector.open(connectionURL); // Tu pojawia się błąd! Wchodzi po tym do catch'a ale catch
+                                                                                                    // wywoływany chyba dlatego że uzyskano połączenie bo urzadzenie się łączy (testowane na słuchawkach)
+                                                                                                        // śmiesznie bo z telefonem się łączy normalnie bez błędu
+                                                                                                            // więc chyba kwiestia że słuchawki nie mogą po SSP - błędy takie same gdy słuchawki schowane w etui więc xd
             // Pobierz strumienie wejścia/wyjścia
             InputStream inputStream = streamConnection.openInputStream();
             OutputStream outputStream = streamConnection.openOutputStream();
 
-            System.out.println("Połączono z urządzeniem: " + remoteDevice.getFriendlyName(false));
+            System.out.println("Połączono z urządzeniem: " + deviceToConnect.getFriendlyName(false));
 
             // Możesz teraz komunikować się z urządzeniem za pomocą strumieni
             // Przykład wysyłania danych
             outputStream.write("Hello from Java Bluetooth!".getBytes());
 
             // Zamknij połączenie po zakończeniu
-            inputStream.close();
-            outputStream.close();
-            streamConnection.close();
+            //inputStream.close();
+            //outputStream.close();
+            //streamConnection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
- */
 }
