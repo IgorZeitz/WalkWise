@@ -12,13 +12,7 @@ jar {
 }
 
 repositories {
-
     mavenCentral()
-
-    maven {
-        url "https://raw.githubusercontent.com/eurotech/kura_addons/mvn-repo/"
-    }
-
 }
 
 dependencies {
@@ -26,11 +20,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // https://mvnrepository.com/artifact/io.ultreia/bluecove
-    //implementation group: 'io.ultreia', name: 'bluecove', version: '2.1.1'
-
-     https://mvnrepository.com/artifact/tinyb/tinyb
-     implementation group: 'tinyb', name: 'tinyb', version: '1.0.100'
-
+    implementation group: 'io.ultreia', name: 'bluecove', version: '2.1.1'
 }
 
 test {
