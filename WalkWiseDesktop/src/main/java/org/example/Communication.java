@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Vector;
+import java.util.concurrent.BlockingQueue;
 
 public class Communication implements Runnable {
 
@@ -15,6 +16,12 @@ public class Communication implements Runnable {
     int[][] receivedData;
 
     public static StreamConnection streamConnection;
+
+    private final BlockingQueue<String> dataQueue;
+
+    public Communication(BlockingQueue<String> dataQueue) {
+        this.dataQueue = dataQueue;
+    }
 
 //    public void receiveData(){}
 
@@ -28,19 +35,12 @@ public class Communication implements Runnable {
     }
 
     // Finding all available bt devices
-    // BUG!!! It searches only paired devices not those that are really available at the moment!!!
-    public static void findAllDevice() throws IOException, InterruptedException {
-
+    public static void findAllDevice() throws IOException, InterruptedException {   // BUG!!! It searches only paired devices not those that are really available at the moment!!!
         //Host device info
         LocalDevice myDevice = LocalDevice.getLocalDevice();
         String myDeviceAddress = myDevice.getBluetoothAddress();
         String myDeviceName = myDevice.getFriendlyName();
         //boolean myDeviceVisibility = myDevice
-
-        // Działa
-        //System.out.println("Komp adres: " + myDevice.getBluetoothAddress());
-        //System.out.println("Komp nazwa: " + myDevice.getFriendlyName());
-        //System.out.println("Komp wykrywalne? " + myDevice.getDiscoverable());
 
         DiscoveryAgent discoveryAgent = myDevice.getDiscoveryAgent();
 
@@ -131,16 +131,18 @@ public class Communication implements Runnable {
             UUID uuid = new UUID(0x1101);  // Standard RFCOMM value
             String connectionURL = "btspp://" + deviceToConnect.getBluetoothAddress() + ":1"  + ";authenticate=false;encrypt=false;master=false;"; // Full connectionURL of the device that we want to connect to
 
-            // Nawiązanie połączenia
-            streamConnection = (StreamConnection) Connector.open(connectionURL); // Tu pojawia się błąd! Wchodzi po tym do catch'a ale catch
-                                                                                                    // wywoływany chyba dlatego że uzyskano połączenie bo urzadzenie się łączy (testowane na słuchawkach)
-                                                                                                        // śmiesznie bo z telefonem się łączy normalnie bez błędu
-                                                                                                            // więc chyba kwiestia że słuchawki nie mogą po SSP - błędy takie same gdy słuchawki schowane w etui więc xd
+            streamConnection = (StreamConnection) Connector.open(connectionURL); // establish connection
+            /*
+            Tu pojawia się błąd! Wchodzi po tym do catch'a ale catch wywoływany chyba dlatego że uzyskano połączenie bo urzadzenie się łączy (testowane na słuchawkach)
+            śmiesznie bo z telefonem się łączy normalnie bez błędu więc chyba kwiestia że słuchawki nie mogą po SSP - błędy takie same gdy słuchawki schowane w etui więc xd
+            EDIT 11.03: chyba aktualnie z ESP nie ma tu żadnych problemów
+             */
+
             //OutputStream outputStream = streamConnection.openOutputStream();
             //outputStream.write("Hello from Java Bluetooth!".getBytes()); // No need for writing to a device
             //outputStream.close();
 
-            System.out.println("Połączono z urządzeniem: " + deviceToConnect.getFriendlyName(false));
+            //System.out.println("Połączono z urządzeniem: " + deviceToConnect.getFriendlyName(false)); //test
 
             // Zamknij połączenie po zakończeniu
             //inputStream.close();
@@ -151,19 +153,29 @@ public class Communication implements Runnable {
         }
     }
 
-    public static void receiveData(){
-        // Pobierz strumienie wejścia/wyjścia
+    boolean odbierajDane = true;    ////////////////////// DAĆ FLAGe NA KIEDY ODBIERAĆ A KIEDY NIE
+    // receiving data from the connected device
+    public void receiveData(){
         try (InputStream inputStream = streamConnection.openInputStream()) {
+
             StringBuilder receivedData = new StringBuilder();
-            byte[] buffer = new byte[1024]; // buffer for input data
+            byte[] buffer = new byte[1023]; // buffer for input data
             int bytesRead;
 
-            while((bytesRead = inputStream.read(buffer)) != -1){
-                String receivedPart = new String(buffer, 0, bytesRead);
-                receivedData.append(receivedPart);
+            while(odbierajDane == true) {   ////////////////////// DAĆ FLAGe NA KIEDY ODBIERAĆ A KIEDY NIE
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    String receivedPart = new String(buffer, 0, bytesRead);
 
-                // Wyświetl odebrane dane
-                System.out.println("Odebrane dane: " + receivedPart);
+                    receivedData.append(receivedPart); // append one whole data portion
+
+                    if (receivedData.toString().contains("\n")) {   // one portion of data ends with "\n" - exiting append if "\n" encountered
+                        break;
+                    }
+                }
+
+                //System.out.println(receivedData); //test
+                dataQueue.put(receivedData.toString()); //Queuing data for mutex
+                receivedData.delete(0, receivedData.length()); // Clearing received data for next data
             }
         } catch (Exception e){
             e.printStackTrace();
