@@ -5,8 +5,75 @@ TaskHandle_t sendDataTask;
 
 BluetoothSerial SerialBT;
 
+// pinout
+#define ROW_MULTIPLEXER_S0 4  // multiplexer 1 address pins
+#define ROW_MULTIPLEXER_S1 5
+#define ROW_MULTIPLEXER_S2 6
+#define ROW_MULTIPLEXER_S3 7
+
+#define COLUMN_MULTIPLEXER_S0 8  // multiplexer 2 address pins
+#define COLUMN_MULTIPLEXER_S1 9
+#define COLUMN_MULTIPLEXER_S2 10
+#define COLUMN_MULTIPLEXER_S3 11
+
+#define READ_MULTIPLEXER_VOLTAGE 12 // multipexer column value read adc
+#define WRITE_MULTIPLEXER_VOLTAGE 13 // multipexer column value read adc
+// global variables
+const unsigned short int multiplexerChannel[16][4] = {  // 4bit binary addresses for all multiplexer channels
+    {0, 0, 0, 0}, // channel 0
+    {0, 0, 0, 1}, // channel 1
+    {0, 0, 1, 0}, // channel 2
+    {0, 0, 1, 1}, // channel 3
+    {0, 1, 0, 0}, // channel 4
+    {0, 1, 0, 1}, // channel 5
+    {0, 1, 1, 0}, // channel 6
+    {0, 1, 1, 1}, // channel 7
+    {1, 0, 0, 0}, // channel 8
+    {1, 0, 0, 1}, // channel 9
+    {1, 0, 1, 0}, // channel 10
+    {1, 0, 1, 1}, // channel 11
+    {1, 1, 0, 0}, // channel 12
+    {1, 1, 0, 1}, // channel 13
+    {1, 1, 1, 0}, // channel 14
+    {1, 1, 1, 1}  // channel 15
+};
+
+unsigned int sensorMatrix[16][16] = {	// all measured values
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+};
+
 void setup() {
-  
+
+  // pin setup
+  pinMode(ROW_MULTIPLEXER_S0, INPUT);
+  pinMode(ROW_MULTIPLEXER_S1, INPUT);
+  pinMode(ROW_MULTIPLEXER_S2, INPUT);
+  pinMode(ROW_MULTIPLEXER_S3, INPUT);
+
+  pinMode(COLUMN_MULTIPLEXER_S0, INPUT);
+  pinMode(COLUMN_MULTIPLEXER_S1, INPUT);
+  pinMode(COLUMN_MULTIPLEXER_S2, INPUT);
+  pinMode(COLUMN_MULTIPLEXER_S3, INPUT);
+
+  pinMode(READ_MULTIPLEXER_VOLTAGE, INPUT);
+
+  pinMode(WRITE_MULTIPLEXER_VOLTAGE, OUTPUT);
+
   // task 1 creation
   xTaskCreatePinnedToCore(
     measurePressure,  //task function to do
@@ -32,7 +99,6 @@ void setup() {
 
 // pressure matrix mat service
 void measurePressure(void * pvParameters){
-  int cnt=0;
   while(true){
     vTaskDelay(pdMS_TO_TICKS(100));
   }
@@ -52,6 +118,49 @@ void sendData(void * pvParameters){
     }
     vTaskDelay(pdMS_TO_TICKS(20));
   }
+}
+
+
+/***  Pressure sensor operation functions ***/
+void writeMux(int channel){	// sending signals to out multiplexer
+  analogWrite(WRITE_MULTIPLEXER_VOLTAGE, 255);  // constant 3.3V for common multiplexer pin - setting only on which channel the voltage should be provided
+
+	int multiplexerAddressPin[] = {ROW_MULTIPLEXER_S0, ROW_MULTIPLEXER_S1, ROW_MULTIPLEXER_S2, ROW_MULTIPLEXER_S3};
+	for(int i = 0; i<4; i++){
+		digitalWrite(multiplexerAddressPin[i], multiplexerChannel[channel][i]); // set multipexer address for channel - (channel = one specific row)
+	}
+}
+
+int readMux(int channel){ // reading multiplexers input values
+	int multiplexerAddressPin[] = {COLUMN_MULTIPLEXER_S0, COLUMN_MULTIPLEXER_S1, COLUMN_MULTIPLEXER_S2, COLUMN_MULTIPLEXER_S3};
+	for(int i = 0; i<4; i++){
+		digitalWrite(multiplexerAddressPin[i], multiplexerChannel[channel][i]); // set multipexer address for channel - (channel = one specific column)
+	}
+
+	int muxValue = analogRead(READ_MULTIPLEXER_VOLTAGE); // Reading common input voltage value
+	return muxValue;
+}
+
+void startMeasuring(){ // checking which sensor is being pressed and with how much pressure
+	for(int i = 0; i<16; i++){  //going through all sensor rows
+		writeMux(i);
+		for(int j = 0; j<16; j++){  //going through all sensor columns
+			int pressureValue = readMux(j);
+			sensor_matrix[i][j] = pressureValue;  //save measured data into corresponding matrix index
+		}
+	}
+}
+
+
+/***  Data transmission functions ***/
+
+
+/***  Configuration functions ***/
+int calibration(){
+	/*	TO DO:
+	 * Change properties depending on the size of limb and weight of the being
+	 * - different voltage ranges
+	 */
 }
 
 void loop() {
