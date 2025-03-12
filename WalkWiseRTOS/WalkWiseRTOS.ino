@@ -7,17 +7,17 @@ BluetoothSerial SerialBT;
 
 // pinout
 #define ROW_MULTIPLEXER_S0 4  // multiplexer 1 address pins
-#define ROW_MULTIPLEXER_S1 5
-#define ROW_MULTIPLEXER_S2 6
-#define ROW_MULTIPLEXER_S3 7
+#define ROW_MULTIPLEXER_S1 0
+#define ROW_MULTIPLEXER_S2 2
+#define ROW_MULTIPLEXER_S3 15
 
-#define COLUMN_MULTIPLEXER_S0 8  // multiplexer 2 address pins
-#define COLUMN_MULTIPLEXER_S1 9
-#define COLUMN_MULTIPLEXER_S2 10
-#define COLUMN_MULTIPLEXER_S3 11
+#define COLUMN_MULTIPLEXER_S0 36  // multiplexer 2 address pins
+#define COLUMN_MULTIPLEXER_S1 39
+#define COLUMN_MULTIPLEXER_S2 34
+#define COLUMN_MULTIPLEXER_S3 35
 
-#define READ_MULTIPLEXER_VOLTAGE 12 // multipexer column value read adc
-#define WRITE_MULTIPLEXER_VOLTAGE 13 // multipexer column value read adc
+#define READ_MULTIPLEXER_VOLTAGE 25 // multipexer column value read ADC
+#define WRITE_MULTIPLEXER_VOLTAGE 26 // multipexer column value read DAC
 // global variables
 const unsigned short int multiplexerChannel[16][4] = {  // 4bit binary addresses for all multiplexer channels
     {0, 0, 0, 0}, // channel 0
@@ -58,17 +58,17 @@ unsigned int sensorMatrix[16][16] = {	// all measured values
 };
 
 void setup() {
-
+  
   // pin setup
-  pinMode(ROW_MULTIPLEXER_S0, INPUT);
-  pinMode(ROW_MULTIPLEXER_S1, INPUT);
-  pinMode(ROW_MULTIPLEXER_S2, INPUT);
-  pinMode(ROW_MULTIPLEXER_S3, INPUT);
+  pinMode(ROW_MULTIPLEXER_S0, OUTPUT);
+  pinMode(ROW_MULTIPLEXER_S1, OUTPUT);
+  pinMode(ROW_MULTIPLEXER_S2, OUTPUT);
+  pinMode(ROW_MULTIPLEXER_S3, OUTPUT);
 
-  pinMode(COLUMN_MULTIPLEXER_S0, INPUT);
-  pinMode(COLUMN_MULTIPLEXER_S1, INPUT);
-  pinMode(COLUMN_MULTIPLEXER_S2, INPUT);
-  pinMode(COLUMN_MULTIPLEXER_S3, INPUT);
+  pinMode(COLUMN_MULTIPLEXER_S0, OUTPUT);
+  pinMode(COLUMN_MULTIPLEXER_S1, OUTPUT);
+  pinMode(COLUMN_MULTIPLEXER_S2, OUTPUT);
+  pinMode(COLUMN_MULTIPLEXER_S3, OUTPUT);
 
   pinMode(READ_MULTIPLEXER_VOLTAGE, INPUT);
 
@@ -100,6 +100,7 @@ void setup() {
 // pressure matrix mat service
 void measurePressure(void * pvParameters){
   while(true){
+    startMeasuring();
     vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
@@ -146,7 +147,7 @@ void startMeasuring(){ // checking which sensor is being pressed and with how mu
 		writeMux(i);
 		for(int j = 0; j<16; j++){  //going through all sensor columns
 			int pressureValue = readMux(j);
-			sensor_matrix[i][j] = pressureValue;  //save measured data into corresponding matrix index
+			sensorMatrix[i][j] = pressureValue;  //save measured data into corresponding matrix index
 		}
 	}
 }
