@@ -11,10 +11,10 @@ BluetoothSerial SerialBT;
 #define ROW_MULTIPLEXER_S2 2
 #define ROW_MULTIPLEXER_S3 15
 
-#define COLUMN_MULTIPLEXER_S0 36  // multiplexer 2 address pins
-#define COLUMN_MULTIPLEXER_S1 39
-#define COLUMN_MULTIPLEXER_S2 34
-#define COLUMN_MULTIPLEXER_S3 35
+#define COLUMN_MULTIPLEXER_S0 32  // multiplexer 2 address pins
+#define COLUMN_MULTIPLEXER_S1 33
+#define COLUMN_MULTIPLEXER_S2 27
+#define COLUMN_MULTIPLEXER_S3 14
 
 #define READ_MULTIPLEXER_VOLTAGE 25 // multipexer column value read ADC
 #define WRITE_MULTIPLEXER_VOLTAGE 26 // multipexer column value read DAC
@@ -111,13 +111,16 @@ void sendData(void * pvParameters){
   SerialBT.begin("WalkWise");
 
   while(true){
-    if (Serial.available()) {
-      SerialBT.write(Serial.read());
-    }
-    if (SerialBT.available()) {
-      Serial.write(SerialBT.read());
-    }
-    vTaskDelay(pdMS_TO_TICKS(20));
+    //if(SerialBT.available()){
+      for(int i = 0; i<16; i++){  // sending each measured value from [][] array (value by value)
+        for(int j = 0; j<16; j++){
+          int val = sensorMatrix[i][j];
+          SerialBT.println(String(i) + ";" + String(j) + ";" + String(val) + "\n"); // waste of time due to int coversion to string?
+        }
+      }
+      vTaskDelay(pdMS_TO_TICKS(10));
+    //}
+    vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
 
@@ -153,15 +156,17 @@ void startMeasuring(){ // checking which sensor is being pressed and with how mu
 }
 
 
-/***  Data transmission functions ***/
-
-
 /***  Configuration functions ***/
 int calibration(){
 	/*	TO DO:
 	 * Change properties depending on the size of limb and weight of the being
 	 * - different voltage ranges
 	 */
+}
+
+int bleConnected(){
+	//return 1; // connection failed
+	//return 0; // connected to desktop
 }
 
 void loop() {
