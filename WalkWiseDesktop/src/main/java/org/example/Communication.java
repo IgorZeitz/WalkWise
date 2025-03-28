@@ -98,9 +98,9 @@ public class Communication implements Runnable {
             }
       } */
 
-       // System.out.println(availableDevices);
+        // System.out.println(availableDevices);
 
-      // System.out.println(availableDevices.get(1).getFriendlyName(false));
+        // System.out.println(availableDevices.get(1).getFriendlyName(false));
 
     }
 
@@ -159,7 +159,7 @@ public class Communication implements Runnable {
         try (InputStream inputStream = streamConnection.openInputStream()) {
 
             StringBuilder receivedData = new StringBuilder();
-            byte[] buffer = new byte[1023]; // buffer for input data
+            byte[] buffer = new byte[11]; // buffer for input data 4bytes index + 3 bytes ";" + 3 bytes value
             int bytesRead;
 
             while(odbierajDane == true) {   ////////////////////// DAĆ FLAGe NA KIEDY ODBIERAĆ A KIEDY NIE
@@ -168,7 +168,7 @@ public class Communication implements Runnable {
 
                     receivedData.append(receivedPart); // append one whole data portion
 
-                    if (receivedData.toString().contains("\n")) {   // one portion of data ends with "\n" - exiting append if "\n" encountered
+                    if (receivedData.toString().contains("\r\n")) {   // one portion of data ends with "\n" - exiting append if "\n" encountered
                         break;
                     }
                 }
