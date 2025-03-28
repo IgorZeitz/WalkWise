@@ -21,6 +21,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.ultreia/bluecove
     implementation group: 'io.ultreia', name: 'bluecove', version: '2.1.1'
+
+    // https://mvnrepository.com/artifact/org.knowm.xchart/xchart
+    implementation group: 'org.knowm.xchart', name: 'xchart', version: '3.8.8'
+
 }
 
 test {
