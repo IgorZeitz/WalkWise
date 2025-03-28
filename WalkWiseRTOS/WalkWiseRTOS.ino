@@ -6,18 +6,20 @@ TaskHandle_t sendDataTask;
 BluetoothSerial SerialBT;
 
 // pinout
-#define ROW_MULTIPLEXER_S0 4  // multiplexer 1 address pins
-#define ROW_MULTIPLEXER_S1 0
-#define ROW_MULTIPLEXER_S2 2
-#define ROW_MULTIPLEXER_S3 15
+#define ROW_MULTIPLEXER_S0 32  // multiplexer 1 address pins
+#define ROW_MULTIPLEXER_S1 33
+#define ROW_MULTIPLEXER_S2 39
+#define ROW_MULTIPLEXER_S3 34
 
-#define COLUMN_MULTIPLEXER_S0 32  // multiplexer 2 address pins
-#define COLUMN_MULTIPLEXER_S1 33
-#define COLUMN_MULTIPLEXER_S2 27
-#define COLUMN_MULTIPLEXER_S3 14
+#define COLUMN_MULTIPLEXER_S0 25  // multiplexer 2 address pins
+#define COLUMN_MULTIPLEXER_S1 4
+#define COLUMN_MULTIPLEXER_S2 15////
+#define COLUMN_MULTIPLEXER_S3 2////
 
-#define READ_MULTIPLEXER_VOLTAGE 25 // multipexer column value read ADC
-#define WRITE_MULTIPLEXER_VOLTAGE 26 // multipexer column value read DAC
+#define READ_MULTIPLEXER_VOLTAGE 35 // multipexer column value read ADC
+#define WRITE_MULTIPLEXER_VOLTAGE 26 // multipexer rows value write DAC
+
+#define uC_POWER_LED 13
 // global variables
 const unsigned short int multiplexerChannel[16][4] = {  // 4bit binary addresses for all multiplexer channels
     {0, 0, 0, 0}, // channel 0
@@ -74,6 +76,10 @@ void setup() {
 
   pinMode(WRITE_MULTIPLEXER_VOLTAGE, OUTPUT);
 
+  pinMode(uC_POWER_LED, OUTPUT);
+
+  digitalWrite(uC_POWER_LED, HIGH);
+
   // task 1 creation
   xTaskCreatePinnedToCore(
     measurePressure,  //task function to do
@@ -95,6 +101,9 @@ void setup() {
     &sendDataTask, // task handle
     0 // task pinned to core 0
   );
+
+  // led signaling
+  digitalWrite(uC_POWER_LED, HIGH);
 }
 
 // pressure matrix mat service
@@ -115,7 +124,7 @@ void sendData(void * pvParameters){
       for(int i = 0; i<16; i++){  // sending each measured value from [][] array (value by value)
         for(int j = 0; j<16; j++){
           int val = sensorMatrix[i][j];
-          SerialBT.println(String(i) + ";" + String(j) + ";" + String(val) + "\n"); // waste of time due to int coversion to string?
+          SerialBT.println(String(i) + ";" + String(j) + ";" + String(val)); // waste of time due to int coversion to string?
         }
       }
       vTaskDelay(pdMS_TO_TICKS(10));
