@@ -1,12 +1,17 @@
 package org.example;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+
+import static java.nio.file.StandardOpenOption.*;
 
 public class Data implements Runnable {
 
@@ -65,6 +70,7 @@ public class Data implements Runnable {
 
     // saving data for external/later purpose
     int lastSavedValue = 1;
+    long startTime = 0;
     void saveData(){
         LocalDateTime currentDate = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
@@ -73,19 +79,19 @@ public class Data implements Runnable {
         try{
             Files.createFile(file); //create file
         } catch (FileAlreadyExistsException e){
-            System.err.format("File %s already exists.%n", file);
+            System.err.format("File %s already exists.%n", file);   ///////// Tu trzeba zmienić aby nie próbować tworzyć za każdym razem jak próbujemy zapisać dane
         } catch (IOException e){
             System.err.format("Error while creating file %s.%n", file);
         }
 
         //Check if there's sth new to save
         if(matrixData[15][15] != lastSavedValue){
-            long stopTime = System.currentTimeMillis(); // for saving approximated sampling times
-            long startTime = System.currentTimeMillis();
-            long time = stopTime - startTime;
+            long stopTime = System.nanoTime();
+            long time = startTime - stopTime;
+            startTime = System.nanoTime(); // for saving approximated sampling times
 
             try (DataOutputStream out = new DataOutputStream(
-                    Files.newOutputStream(file))) {
+                    Files.newOutputStream(file, WRITE, APPEND))) {
                 out.writeLong(time);    // writing time do file
                 for (int i = 0; i < 16; i++) {
                     for (int j = 0; j < 16; j++) {
@@ -100,8 +106,22 @@ public class Data implements Runnable {
     }
 
     // loading previous measurements
-    void readData(){
-        // TO DO
+    void loadData(String fileName){
+        long samplingTime;
+        try(DataInputStream in = new DataInputStream(new FileInputStream("./Measurements/"+fileName))){
+            while (in.available() > 0) {
+                samplingTime = in.readLong();
+                for (int i = 0; i < 16; i++) {
+                    for (int j = 0; j < 16; j++) {
+                        matrixData[i][j] = in.readInt();
+                    }
+                }
+                //System.out.println(samplingTime); /test
+                //System.out.println(Arrays.deepToString(matrixData)); /test
+            }
+        } catch (IOException e){
+            System.err.format("Error while reading file");
+        }
     }
 
     // for sharing data to visualize it
