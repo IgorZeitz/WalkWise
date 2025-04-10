@@ -2,12 +2,19 @@ package org.example;
 
 import javax.sound.midi.Receiver;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-
+/*
         BlockingQueue<String> testQueue = new LinkedBlockingQueue<>();
 
         Communication test = new Communication(testQueue);
@@ -20,11 +27,18 @@ public class Main {
         Communication.findAllDevice();
 
         Communication.connectToDevice(Communication.findSpecificDevice("WalkWise"));
+
+        testPrzesylDaty.saveData();
+
         receiverThread.start();
         dataThread.start();
 
         System.out.println("To już po:");
+*/
 
+        //TEST
+
+        //TEST END
 
         //TO DO: Test if bluetooth is on!!!
 
