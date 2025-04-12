@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -37,10 +38,11 @@ public class Data implements Runnable {
     // processing incoming data
     void receivePureData(){
         try{
-            while(przetwarzajDane == true) {    ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
+            while(przetwarzajDane) {    ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
                 pureValue = dataQueue.take();
                 //System.out.println("Dane do przetworzenia: " + pureValue); //test
                 fixData();
+                przetwarzajDane = false;
             }
         } catch (InterruptedException e){
             e.printStackTrace();
@@ -106,19 +108,26 @@ public class Data implements Runnable {
     }
 
     // loading previous measurements
+    ArrayList<Long> samplingTimes = new ArrayList<>();
+    ArrayList<int[][]> sampledData = new ArrayList<>();
+    //public long samplingTime;
     void loadData(String fileName){
-        long samplingTime;
         try(DataInputStream in = new DataInputStream(new FileInputStream("./Measurements/"+fileName))){
             while (in.available() > 0) {
-                samplingTime = in.readLong();
+                samplingTimes.add(in.readLong());
+                int[][] matrix = new int[16][16];
                 for (int i = 0; i < 16; i++) {
                     for (int j = 0; j < 16; j++) {
-                        matrixData[i][j] = in.readInt();
+                        matrix[i][j] = in.readInt();
                     }
                 }
-                //System.out.println(samplingTime); /test
-                //System.out.println(Arrays.deepToString(matrixData)); /test
+                sampledData.add(matrix);
+//                System.out.println(samplingTimes); //test
+//                for(int i = 0; i < samplingTimes.size(); i++){
+//                    System.out.println(Arrays.deepToString(sampledData.get(i))); //test
+//                }
             }
+
         } catch (IOException e){
             System.err.format("Error while reading file");
         }
