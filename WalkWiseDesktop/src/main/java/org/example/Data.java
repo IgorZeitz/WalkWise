@@ -38,11 +38,10 @@ public class Data implements Runnable {
     // processing incoming data
     void receivePureData(){
         try{
-            while(przetwarzajDane) {    ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
+            while(przetwarzajDane == true) {    ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
                 pureValue = dataQueue.take();
                 //System.out.println("Dane do przetworzenia: " + pureValue); //test
                 fixData();
-                przetwarzajDane = false;
             }
         } catch (InterruptedException e){
             e.printStackTrace();

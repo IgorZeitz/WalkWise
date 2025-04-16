@@ -5,12 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0242b25d-43ac-478f-99a5-720022233a27" name="Changes" comment="Correction of searing for the specific bt device">
-      <change afterPath="$PROJECT_DIR$/Measurements/10-04-2025_13-05-14.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Measurements/10-04-2025_13-06-59.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Measurements/10-04-2025_13-08-08.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Measurements/10-04-2025_13-09-20.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Measurements/10-04-2025_13-09-23.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-baby-footprint-50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-change-48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-load-from-file-48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-mat-64.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-menu-button-48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-pressure-40.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/icons8-update-50.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/imagen-accidente-de-trabajo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Icons/walkwise-primary-logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Measurements/10-04-2025_14-02-41.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Measurements/10-04-2025_14-49-30.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Measurements/10-04-2025_14-50-16.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
     </list>
@@ -64,6 +74,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="module-info" />
       </list>
     </option>
   </component>

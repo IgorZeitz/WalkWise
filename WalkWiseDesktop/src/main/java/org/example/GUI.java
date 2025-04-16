@@ -1,0 +1,180 @@
+package org.example;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+
+public class GUI extends Application {
+
+    static String version = "ver. 0.0.1";
+
+    @Override
+    public void start(Stage menuStage) throws Exception {
+
+        //Menu bar icons
+        VBox submenuVBox = new VBox(6);
+
+        Image menuImage = new Image(new FileInputStream("./Icons/icons8-menu-button-48.png"));  //main menu icon
+        ImageView menuView = new ImageView(menuImage);
+        menuView.setX(2);
+        menuView.setY(2);
+        menuView.setOnMouseClicked(e -> submenuVBox.setVisible(!submenuVBox.isVisible()));
+        menuView.setOnMouseEntered(e -> menuView.setStyle(
+                "-fx-cursor: hand; -fx-effect: dropshadow(gaussian, black, 3, 0.5, 0, 0);"));
+        menuView.setOnMouseExited(e -> menuView.setStyle(
+                "-fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);"
+        ));
+
+        ImageView measurementMenuView = getSubmenuIconView("./Icons/icons8-mat-64.png");
+        ImageView loadDataMenuView = getSubmenuIconView("./Icons/icons8-load-from-file-48.png");
+        ImageView exportDataMenuView = getSubmenuIconView("./Icons/icons8-change-48.png");
+        ImageView updateMenuView = getSubmenuIconView("./Icons/icons8-update-50.png");
+
+        submenuVBox.getChildren().addAll(measurementMenuView, loadDataMenuView, exportDataMenuView, updateMenuView);
+        submenuVBox.setLayoutY(56);
+        submenuVBox.setLayoutX(4);
+        submenuVBox.setVisible(false);
+
+
+        //Logo Bar
+        HBox logoBox = createLogoBox();
+
+
+        //Last measurements list
+        File measurementsFolder = new File("./Measurements/");
+        File[] measurements = measurementsFolder.listFiles();
+        if(measurements == null) measurements = new File[0];
+
+        Arrays.sort(measurements, (f1, f2) -> Long.compare(f2.lastModified(), f1.lastModified())); //sorting for newest files
+
+        ListView<String> listView = new ListView<>();   // listing only newest 10 files
+        for (int i = 0; i < Math.min(10, measurements.length); i++) {
+            listView.getItems().add(measurements[i].getName());
+        }
+
+        listView.setMaxWidth(165);
+        listView.setLayoutX(300);
+        listView.setMaxHeight(175);
+        listView.setLayoutY(200);
+
+        Label lastMeasurements = new Label("Ostatnie Pomiary:");
+        lastMeasurements.setStyle("-fx-font-size: 18");
+
+        VBox lastMeasurementsBox = new VBox(lastMeasurements, listView);
+        VBox.setMargin(listView, new Insets(0, 100, 10, 50));
+        VBox.setMargin(lastMeasurements, new Insets(0, 115, 10, 50));
+        lastMeasurementsBox.setStyle("-fx-alignment: CENTER_RIGHT;");
+
+
+        //Measurements counter
+        Label measurementsNumber = new Label("Liczba Pomiarow: " + measurements.length);
+        measurementsNumber.setStyle("-fx-font-size: 18;");
+
+        HBox measurementsNumberBox = new HBox(measurementsNumber, lastMeasurementsBox);
+
+        measurementsNumberBox.setStyle("-fx-alignment: CENTER_RIGHT;");
+        HBox.setMargin(measurementsNumber, new Insets(0, 80, 10, 50));
+
+
+        StackPane layout = new StackPane(logoBox, measurementsNumberBox);
+
+        Group menuGroup = new Group();
+        menuGroup.getChildren().addAll(menuView, submenuVBox);
+
+        HBox mainBox = new HBox();
+        HBox.setHgrow(layout, Priority.ALWAYS);
+        mainBox.getChildren().addAll(menuGroup,layout);
+
+        menuStage.setTitle("WalkWise");
+
+        Scene scene = new Scene(mainBox, 680, 350);
+
+        menuStage.setScene(scene);
+        menuStage.show();
+
+    }
+
+    private static ImageView getSubmenuIconView(String fileSrc) throws FileNotFoundException {
+        Image image = new Image(new FileInputStream(fileSrc));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(40);
+        imageView.setFitWidth(40);
+        imageView.setOnMouseEntered(e -> imageView.setStyle(
+                "-fx-cursor: hand; -fx-effect: dropshadow(gaussian, black, 3, 0.5, 0, 0);"));
+        imageView.setOnMouseExited(e -> imageView.setStyle(
+                "-fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);"
+        ));
+        return imageView;
+    }
+
+    private static HBox createLogoBox() throws FileNotFoundException {
+        Image logoNameImage = new Image(new FileInputStream("./Icons/walkwise-primary-logo.png"));
+        ImageView logoNameView = new ImageView(logoNameImage);
+        logoNameView.setFitHeight(60);
+        logoNameView.setFitWidth(210);
+
+        Image logoImage = new Image(new FileInputStream("./Icons/imagen-accidente-de-trabajo.jpg"));
+        ImageView logoView = new ImageView(logoImage);
+        logoView.setFitHeight(60);
+        logoView.setFitWidth(60);
+
+        Label verisonLabel = new Label(version);
+
+        HBox logoBox = new HBox(80);
+
+        logoNameView.fitWidthProperty().bind(logoBox.widthProperty().divide(5));    //Responsive image placement
+        logoView.fitWidthProperty().bind(logoBox.widthProperty().divide(5));
+
+        logoBox.setStyle("-fx-alignment: TOP_CENTER;");
+        logoBox.getChildren().addAll(logoView, logoNameView, verisonLabel);
+        logoBox.setLayoutX(100);
+        logoBox.setLayoutY(20);
+
+        logoNameView.setPreserveRatio(true);
+        logoView.setPreserveRatio(true);
+
+        logoBox.setVisible(true);
+
+        return logoBox;
+    }
+
+    void loadIcons(){
+
+    }
+
+    public void menuScreen(){
+
+    }
+
+    public void loadMeasurementsScreen(){
+
+    }
+
+    public void startNewMeasurementsScreen(){
+
+    }
+
+    public void exportDataScreen(){
+
+    }
+
+    public void updateScreen() throws FileNotFoundException {
+        Image loadingImage = new Image(new FileInputStream("./Icons/icons8-baby-footprint-50"));    //submenu update icon
+        ImageView loadingView = new ImageView(loadingImage);
+
+    }
+}
