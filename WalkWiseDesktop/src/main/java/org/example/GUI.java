@@ -29,6 +29,7 @@ public class GUI extends Application {
 
     static String version = "ver. 0.0.1";
     ImageView loadingGif;   // global imageView for changing visibility of loading screen
+    String loadFileName;
 
     @Override
     public void start(Stage menuStage) throws Exception {
@@ -60,7 +61,12 @@ public class GUI extends Application {
             }
         });
 
+        // loaded measurements view
         ImageView loadDataMenuView = getSubmenuIconView("./Icons/icons8-load-from-file-48.png");
+        loadDataMenuView.setOnMouseClicked(e -> {
+            loadMeasurementsScreen(loadFileName);
+        });
+
         ImageView exportDataMenuView = getSubmenuIconView("./Icons/icons8-change-48.png");
         ImageView updateMenuView = getSubmenuIconView("./Icons/icons8-update-50.png");
 
@@ -82,7 +88,7 @@ public class GUI extends Application {
         Arrays.sort(measurements, (f1, f2) -> Long.compare(f2.lastModified(), f1.lastModified())); //sorting for newest files
 
         ListView<String> listView = new ListView<>();   // listing only newest 10 files
-        for (int i = 0; i < Math.min(10, measurements.length); i++) {
+        for (int i = 0; i < measurements.length; i++){//Math.min(10, measurements.length); i++) {
             listView.getItems().add(measurements[i].getName());
         }
 
@@ -90,6 +96,9 @@ public class GUI extends Application {
         listView.setLayoutX(300);
         listView.setMaxHeight(175);
         listView.setLayoutY(200);
+        listView.setOnMouseClicked(e -> {
+            loadFileName = listView.getSelectionModel().getSelectedItem();
+        });
 
         Label lastMeasurements = new Label("Ostatnie Pomiary:");
         lastMeasurements.setStyle("-fx-font-size: 18");
@@ -187,7 +196,40 @@ public class GUI extends Application {
     public void menuScreen(){
     }
 
-    public void loadMeasurementsScreen(){
+    public void loadMeasurementsScreen(String fileName){
+        if(fileName != null){
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+
+                    BlockingQueue<String> testQueue = new LinkedBlockingQueue<>();
+                    Data testPrzesylDaty = new Data(testQueue);
+
+                    Visualization visualization = new Visualization();
+
+                    System.out.println(testPrzesylDaty.sampledData);
+
+                    visualization.displayHeatmapExternalDat(testPrzesylDaty, fileName);
+                    return null;
+                }
+
+                @Override
+                protected void succeeded() {
+                }
+
+                @Override
+                protected void failed() {
+                    System.err.println("Task Error!");
+                }
+            };
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
+        } else {
+            System.out.println("No File chosen");
+            //TO DO: CHOOSE FILE ERROR SCREEN
+        }
     }
 
 
