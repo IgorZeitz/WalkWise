@@ -43,7 +43,7 @@ public class Visualization {
 
     void displayRTHeatmap(Data data) throws InterruptedException {
         JFrame frame = new JFrame("Measurement");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         // Display the window.
         // frame.setVisible(true);

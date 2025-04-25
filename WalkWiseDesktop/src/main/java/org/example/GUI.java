@@ -1,5 +1,6 @@
 package org.example;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -13,20 +14,29 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
+import javax.swing.plaf.ComponentUI;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
+
+//TO DO: new threads/tasks shouldn't operate in this class
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class GUI extends Application {
 
     static String version = "ver. 0.0.1";
+    ImageView loadingGif;   // global imageView for changing visibility of loading screen
 
     @Override
     public void start(Stage menuStage) throws Exception {
 
         //Menu bar icons
         VBox submenuVBox = new VBox(6);
+
+        loadingScreen(); // Create loading screen, default visibility = false
 
         Image menuImage = new Image(new FileInputStream("./Icons/icons8-menu-button-48.png"));  //main menu icon
         ImageView menuView = new ImageView(menuImage);
@@ -39,7 +49,17 @@ public class GUI extends Application {
                 "-fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);"
         ));
 
+        // new measurements view
         ImageView measurementMenuView = getSubmenuIconView("./Icons/icons8-mat-64.png");
+        measurementMenuView.setOnMouseClicked(e -> {
+            try {
+                loadingGif.setVisible(true);    // show loading screen for the time needed to connect to the device
+                startNewMeasurementsScreen();   // Connect to the device + create new threads needed for data visualization
+            } catch (IOException | InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         ImageView loadDataMenuView = getSubmenuIconView("./Icons/icons8-load-from-file-48.png");
         ImageView exportDataMenuView = getSubmenuIconView("./Icons/icons8-change-48.png");
         ImageView updateMenuView = getSubmenuIconView("./Icons/icons8-update-50.png");
@@ -93,7 +113,7 @@ public class GUI extends Application {
         StackPane layout = new StackPane(logoBox, measurementsNumberBox);
 
         Group menuGroup = new Group();
-        menuGroup.getChildren().addAll(menuView, submenuVBox);
+        menuGroup.getChildren().addAll(menuView, submenuVBox, loadingGif);
 
         HBox mainBox = new HBox();
         HBox.setHgrow(layout, Priority.ALWAYS);
@@ -152,24 +172,77 @@ public class GUI extends Application {
         return logoBox;
     }
 
-    void loadIcons(){
+    // Loading screen gif
+    public void loadingScreen() throws FileNotFoundException {
+        Image loadingDog = new Image(new FileInputStream("./Icons/loadingDog.gif"));
+        loadingGif = new ImageView(loadingDog);
+        loadingGif.setFitHeight(350);
+        loadingGif.setFitWidth(680);
+        loadingGif.setVisible(false);
+    }
 
+    void loadIcons(){
     }
 
     public void menuScreen(){
-
     }
 
     public void loadMeasurementsScreen(){
-
     }
 
-    public void startNewMeasurementsScreen(){
 
+    public void startNewMeasurementsScreen() throws IOException, InterruptedException {
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+
+                Communication.findAllDevice();  // find all available devices
+
+                if(Communication.connectToDevice(Communication.findSpecificDevice("WalkWise")) == true){    // find if there is a WalkWise device and connect to it
+                    //
+                    BlockingQueue<String> dataQueue = new LinkedBlockingQueue<>(); // Queue for received data
+                    Communication receiveData = new Communication(dataQueue);
+                    Data processData = new Data(dataQueue);
+                    Thread receiverThread = new Thread(receiveData);    // Receiving data thread
+                    Thread dataThread = new Thread(processData);    // Data processing thread
+
+                    receiverThread.start();
+                    dataThread.start();
+
+                    loadingGif.setVisible(false);
+
+                    Visualization visualization = new Visualization();
+                    try {
+                        visualization.displayRTHeatmap(processData);    // Show heatmap form RT processed data
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //
+                } else {
+                    // TO DO: DISPLAY NOT CONNECTED SCREEN
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                loadingGif.setVisible(false);
+            }
+
+            @Override
+            protected void failed() {
+                loadingGif.setVisible(false);
+                System.err.println("Task Error!");
+            }
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     public void exportDataScreen(){
-
     }
 
     public void updateScreen() throws FileNotFoundException {

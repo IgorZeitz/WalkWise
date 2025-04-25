@@ -67,6 +67,8 @@ public class Data implements Runnable {
         matrixData[rowIndex][columnIndex] = value;
 
         System.out.println(matrixData[rowIndex][columnIndex]); //test
+
+        // !!! saveData() is creating multiple files for one measurement
     }
 
     // saving data for external/later purpose

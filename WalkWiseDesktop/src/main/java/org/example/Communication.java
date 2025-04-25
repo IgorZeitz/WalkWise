@@ -124,7 +124,7 @@ public class Communication implements Runnable {
     }
 
     //  Connecting to the device
-    public static void connectToDevice(RemoteDevice deviceToConnect){
+    public static boolean connectToDevice(RemoteDevice deviceToConnect){
 
         try {
             // UUID for bluetooth SPP (Serial Port Profile)
@@ -147,9 +147,11 @@ public class Communication implements Runnable {
             // Zamknij połączenie po zakończeniu
             //inputStream.close();
             //streamConnection.close();
+            return true;
 
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
