@@ -1,9 +1,6 @@
 package org.example;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -82,13 +79,13 @@ public class Data implements Runnable {
         try{
             Files.createFile(file); //create file
         } catch (FileAlreadyExistsException e){
-            System.err.format("File %s already exists.%n", file);   ///////// Tu trzeba zmienić aby nie próbować tworzyć za każdym razem jak próbujemy zapisać dane
+            System.err.format("File %s already exists.%n", file);   ///////// Tu trzeba zmienić aby nie próbować tworzyć za każdym razem jak próbujemy zapisać dane!!!!!!!!!!!!!!!!!!
         } catch (IOException e){
             System.err.format("Error while creating file %s.%n", file);
         }
 
         //Check if there's sth new to save
-        if(matrixData[15][15] != lastSavedValue){
+        if(matrixData[15][15] != lastSavedValue){   /////// Gdy wartosc pola [15][15] nie bedzie zmieniana przy pomiarze bo np nie postawimy tam nogi to nic sie nie zapisze!!!!!!!
             long stopTime = System.nanoTime();
             long time = startTime - stopTime;
             startTime = System.nanoTime(); // for saving approximated sampling times
@@ -131,6 +128,21 @@ public class Data implements Runnable {
 
         } catch (IOException e){
             System.err.format("Error while reading file");
+        }
+    }
+
+    // change .dat file to .csv
+    void exportCSV(String fileName) throws FileNotFoundException {
+        loadData(fileName);
+        try (PrintWriter csvWriter = new PrintWriter("./Measurements/"+ fileName.replace(".dat", ".csv"))) {
+            for(int i = 0; i < samplingTimes.size(); i++){
+                csvWriter.print(samplingTimes.get(i));  // printing time values
+                csvWriter.print(Arrays.deepToString(sampledData.get(i))); // printing all matrix values
+                csvWriter.println();    // data separator
+            }
+            csvWriter.println();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

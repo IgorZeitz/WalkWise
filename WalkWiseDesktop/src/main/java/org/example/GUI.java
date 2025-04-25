@@ -15,10 +15,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 
 import javax.swing.plaf.ComponentUI;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 
 //TO DO: new threads/tasks shouldn't operate in this class
@@ -67,7 +64,16 @@ public class GUI extends Application {
             loadMeasurementsScreen(loadFileName);
         });
 
+        // export data view
         ImageView exportDataMenuView = getSubmenuIconView("./Icons/icons8-change-48.png");
+        exportDataMenuView.setOnMouseClicked(e -> {
+            try {
+                exportDataScreen(loadFileName);
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         ImageView updateMenuView = getSubmenuIconView("./Icons/icons8-update-50.png");
 
         submenuVBox.getChildren().addAll(measurementMenuView, loadDataMenuView, exportDataMenuView, updateMenuView);
@@ -197,19 +203,19 @@ public class GUI extends Application {
     }
 
     public void loadMeasurementsScreen(String fileName){
-        if(fileName != null){
+        if(fileName != null){   // check if the file was chosen
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
 
-                    BlockingQueue<String> testQueue = new LinkedBlockingQueue<>();
-                    Data testPrzesylDaty = new Data(testQueue);
+                    BlockingQueue<String> dataQueue = new LinkedBlockingQueue<>();
+                    Data loadData = new Data(dataQueue);
 
                     Visualization visualization = new Visualization();
 
-                    System.out.println(testPrzesylDaty.sampledData);
+                    //System.out.println(testPrzesylDaty.sampledData);
 
-                    visualization.displayHeatmapExternalDat(testPrzesylDaty, fileName);
+                    visualization.displayHeatmapExternalDat(loadData, fileName); // visualizing measurement form loaded file
                     return null;
                 }
 
@@ -284,7 +290,16 @@ public class GUI extends Application {
         thread.start();
     }
 
-    public void exportDataScreen(){
+    public void exportDataScreen(String fileName) throws FileNotFoundException {
+        if(fileName != null){   // check if the file was chosen
+            BlockingQueue<String> dataQueue = new LinkedBlockingQueue<>();
+            Data dataFile = new Data(dataQueue);
+            dataFile.exportCSV(fileName);
+            //TO DO: SUCCESS WINDOW
+        } else {
+            System.out.println("No export file chosen");
+            //TO DO: CHOOSE FILE ERROR SCREEN
+        }
     }
 
     public void updateScreen() throws FileNotFoundException {
