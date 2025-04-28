@@ -2,9 +2,12 @@ package org.example;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -25,12 +28,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class GUI extends Application {
 
     static String version = "ver. 0.0.1";
-    ImageView loadingGif;   // global imageView for changing visibility of loading screen
+    ImageView loadingGif; //updatingGif;   // global imageView for changing visibility of loading screen
     String loadFileName;
+    Stage mainStage;    // Global stage for all scenes
 
     @Override
     public void start(Stage menuStage) throws Exception {
 
+        mainStage = menuStage;
         //Menu bar icons
         VBox submenuVBox = new VBox(6);
 
@@ -74,17 +79,25 @@ public class GUI extends Application {
             }
         });
 
+        // check for update app view
         ImageView updateMenuView = getSubmenuIconView("./Icons/icons8-update-50.png");
+        updateMenuView.setOnMouseClicked(e -> {
+            try {
+                updateScreen();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         submenuVBox.getChildren().addAll(measurementMenuView, loadDataMenuView, exportDataMenuView, updateMenuView);
         submenuVBox.setLayoutY(56);
         submenuVBox.setLayoutX(4);
         submenuVBox.setVisible(false);
 
-
         //Logo Bar
         HBox logoBox = createLogoBox();
-
 
         //Last measurements list
         File measurementsFolder = new File("./Measurements/");
@@ -111,9 +124,8 @@ public class GUI extends Application {
 
         VBox lastMeasurementsBox = new VBox(lastMeasurements, listView);
         VBox.setMargin(listView, new Insets(0, 100, 10, 50));
-        VBox.setMargin(lastMeasurements, new Insets(0, 115, 10, 50));
+        VBox.setMargin(lastMeasurements, new Insets(100, 115, 10, 50));
         lastMeasurementsBox.setStyle("-fx-alignment: CENTER_RIGHT;");
-
 
         //Measurements counter
         Label measurementsNumber = new Label("Liczba Pomiarow: " + measurements.length);
@@ -138,9 +150,8 @@ public class GUI extends Application {
 
         Scene scene = new Scene(mainBox, 680, 350);
 
-        menuStage.setScene(scene);
-        menuStage.show();
-
+        mainStage.setScene(scene);
+        mainStage.show();
     }
 
     private static ImageView getSubmenuIconView(String fileSrc) throws FileNotFoundException {
@@ -157,30 +168,21 @@ public class GUI extends Application {
     }
 
     private static HBox createLogoBox() throws FileNotFoundException {
-        Image logoNameImage = new Image(new FileInputStream("./Icons/walkwise-primary-logo.png"));
+        Image logoNameImage = new Image(new FileInputStream("./Icons/WalkWise_LogoNazwa-fotor-bg-remover-2025042712712.png"));
         ImageView logoNameView = new ImageView(logoNameImage);
-        logoNameView.setFitHeight(60);
-        logoNameView.setFitWidth(210);
-
-        Image logoImage = new Image(new FileInputStream("./Icons/imagen-accidente-de-trabajo.jpg"));
-        ImageView logoView = new ImageView(logoImage);
-        logoView.setFitHeight(60);
-        logoView.setFitWidth(60);
 
         Label verisonLabel = new Label(version);
 
         HBox logoBox = new HBox(80);
 
         logoNameView.fitWidthProperty().bind(logoBox.widthProperty().divide(5));    //Responsive image placement
-        logoView.fitWidthProperty().bind(logoBox.widthProperty().divide(5));
 
         logoBox.setStyle("-fx-alignment: TOP_CENTER;");
-        logoBox.getChildren().addAll(logoView, logoNameView, verisonLabel);
-        logoBox.setLayoutX(100);
+        logoBox.getChildren().addAll(logoNameView, verisonLabel);
+        logoBox.setLayoutX(80);
         logoBox.setLayoutY(20);
 
         logoNameView.setPreserveRatio(true);
-        logoView.setPreserveRatio(true);
 
         logoBox.setVisible(true);
 
@@ -302,9 +304,62 @@ public class GUI extends Application {
         }
     }
 
-    public void updateScreen() throws FileNotFoundException {
-        Image loadingImage = new Image(new FileInputStream("./Icons/icons8-baby-footprint-50"));    //submenu update icon
-        ImageView loadingView = new ImageView(loadingImage);
+    public void updateScreen() throws FileNotFoundException, InterruptedException {
+        // Actual version button & label
+        Label updateLabel1 = new Label("Wersja jest aktualna");
+        updateLabel1.setVisible(false);
+        Button updateButton1 = new Button("Ok");
+        updateButton1.setVisible(false);
 
+        // New version button & label
+        Label updateLabel2 = new Label("Nowa wersja");
+        updateLabel2.setVisible(false);
+        Button updateButton2 = new Button("Pobierz");
+        updateButton2.setVisible(false);
+
+        ProgressBar updateBar = new ProgressBar(0); // update checking progress bar
+        updateBar.setVisible(true);
+
+        HBox updateButtonBox = new HBox(updateLabel1, updateLabel2, updateButton1, updateButton2);
+        updateButtonBox.setAlignment(Pos.CENTER);
+        updateButtonBox.setVisible(false);
+
+        Task<Void> checkUpdateTask = new Task<>() {    // Task for checking latest version and displaying loading screen while checking
+            @Override
+            protected Void call() throws Exception {
+                for (int i = 1; i <= 100; i++) {    // Simulation of version checking
+                    Thread.sleep(200);          // TO DO: AutoUpdate.checkVersion();
+                    updateProgress(i, 100);
+                }
+                updateBar.setVisible(false);
+                if(AutoUpdate.checkVersion().equals(AutoUpdate.localVersion)){  // if the version is actual
+                    updateLabel1.setVisible(true);
+                    updateButton1.setVisible(true);
+                } else {    // if there is a newer version
+                    updateLabel2.setVisible(true);
+                    updateButton2.setVisible(true);
+                }
+                updateButtonBox.setVisible(true);
+                return null;
+            }
+        };
+
+        Thread thread = new Thread(checkUpdateTask);
+        thread.setDaemon(true);
+        thread.start();
+
+        updateBar.progressProperty().bind(checkUpdateTask.progressProperty()); // loading progress bar (dependent on checkUpdateTask)
+
+        Image updatingImage = new Image(new FileInputStream("./Icons/updatingBlob.gif"));    // updating waiting gif
+        ImageView updatingGif = new ImageView(updatingImage);
+        updatingGif.setFitHeight(300);
+        updatingGif.setFitWidth(300);
+        updatingGif.setVisible(true);
+
+        VBox updateBox = new VBox(updatingGif, updateBar, updateButtonBox);
+        updateBox.setAlignment(Pos.CENTER);
+
+        Scene updateScene = new Scene(updateBox, 680, 350);
+        mainStage.setScene(updateScene);
     }
 }
