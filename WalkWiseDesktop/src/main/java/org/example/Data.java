@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
@@ -31,14 +32,15 @@ public class Data implements Runnable {
         }
     }
 
-    boolean przetwarzajDane = true; ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
+    boolean processData = true; ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
     // processing incoming data
     void receivePureData(){
         try{
-            while(przetwarzajDane == true) {    ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
+            while(processData == true) {
                 pureValue = dataQueue.take();
                 //System.out.println("Dane do przetworzenia: " + pureValue); //test
                 fixData();
+                saveData(GUI.currentTime);
             }
         } catch (InterruptedException e){
             e.printStackTrace();
@@ -63,32 +65,19 @@ public class Data implements Runnable {
 
         matrixData[rowIndex][columnIndex] = value;
 
-        System.out.println(matrixData[rowIndex][columnIndex]); //test
-
-        // !!! saveData() is creating multiple files for one measurement
+        //System.out.println(matrixData[rowIndex][columnIndex]); //test
     }
 
     // saving data for external/later purpose
-    int lastSavedValue = 1;
     long startTime = 0;
-    void saveData(){
-        LocalDateTime currentDate = LocalDateTime.now();
+    void saveData(LocalDateTime currentTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
-        Path file = Path.of("./Measurements" +"/"+currentDate.format(formatter)+".dat"); //new file named as current date and saved in Measurements folder
+        Path file = Path.of("./Measurements" +"/"+currentTime.format(formatter)+".dat"); //new file named as current date and saved in Measurements folder
 
-        try{
-            Files.createFile(file); //create file
-        } catch (FileAlreadyExistsException e){
-            System.err.format("File %s already exists.%n", file);   ///////// Tu trzeba zmienić aby nie próbować tworzyć za każdym razem jak próbujemy zapisać dane!!!!!!!!!!!!!!!!!!
-        } catch (IOException e){
-            System.err.format("Error while creating file %s.%n", file);
-        }
-
-        //Check if there's sth new to save
-        if(matrixData[15][15] != lastSavedValue){   /////// Gdy wartosc pola [15][15] nie bedzie zmieniana przy pomiarze bo np nie postawimy tam nogi to nic sie nie zapisze!!!!!!!
+        if(Files.exists(file)){ //Check if the file exist
             long stopTime = System.nanoTime();
-            long time = startTime - stopTime;
-            startTime = System.nanoTime(); // for saving approximated sampling times
+            long time = startTime - stopTime;   // approximated sampling time
+            startTime = System.nanoTime();
 
             try (DataOutputStream out = new DataOutputStream(
                     Files.newOutputStream(file, WRITE, APPEND))) {
@@ -101,7 +90,14 @@ public class Data implements Runnable {
             } catch (IOException e) {
                 System.err.println("Error while writing to file");
             }
-            lastSavedValue = matrixData[15][15];
+        } else {
+            try{
+                Files.createFile(file); //create file
+            } catch (FileAlreadyExistsException e){
+                System.err.format("File %s already exists.%n", file);
+            } catch (IOException e){
+                System.err.format("Error while creating file %s.%n", file);
+            }
         }
     }
 

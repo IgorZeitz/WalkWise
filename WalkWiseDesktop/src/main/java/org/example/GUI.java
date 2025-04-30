@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 
 import javax.swing.plaf.ComponentUI;
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 //TO DO: new threads/tasks shouldn't operate in this class
@@ -31,6 +32,7 @@ public class GUI extends Application {
     ImageView loadingGif; //updatingGif;   // global imageView for changing visibility of loading screen
     String loadFileName;
     Stage mainStage;    // Global stage for all scenes
+    public static LocalDateTime currentTime = LocalDateTime.now();
 
     @Override
     public void start(Stage menuStage) throws Exception {
