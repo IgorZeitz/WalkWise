@@ -2,7 +2,9 @@ package org.example;
 
 import java.io.*;
 import java.nio.file.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +18,18 @@ public class Data implements Runnable {
 
     private final BlockingQueue<String> dataQueue;
 
+    int[][] calibrationMatrix = new int[16][16];
+
+    //Power law regression parameters for each column to calculate weight
+    double[] c = {0.0956, 0.0881, 0.0786, 0.0857, 0.108, 0.1, 0.0882, 0.108, 0.111, 0.0964, 0.118, 0.108, 0.115, 0.0907, 0.0964, 0.0603};
+    double[] K = {0.0706, 0.106, 0.152, 0.137, 0.107, 0.139, 0.21, 0.139, 0.12, 0.165, 0.126, 0.153, 0.137, 0.13, 0.111, 0.437};
+    double c1 = 3.05;
+    double K1 = 0.0177;
+
     String pureValue;   // global string for storing incoming data
 
     int[][] matrixData = new int[16][16];   //representation of physical matrix pressure sensor
+    int[][] weightData = new int[16][16];
 
     public Data(BlockingQueue<String> dataQueue) {
         this.dataQueue = dataQueue;
@@ -26,15 +37,16 @@ public class Data implements Runnable {
     @Override
     public void run() {
         try{
-            receivePureData();
+            getCalibrationMatrix();
+            receivePureData(true);
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    boolean processData = true; ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
+    //boolean processData = true; ////////////////////// DAĆ FLAGe NA KIEDY PRZETWARZAĆ A KIEDY NIE
     // processing incoming data
-    void receivePureData(){
+    void receivePureData(boolean processData){
         try{
             while(processData == true) {
                 pureValue = dataQueue.take();
@@ -42,6 +54,15 @@ public class Data implements Runnable {
                 fixData();
                 saveData(GUI.currentTime);
             }
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    void receivePureData(){
+        try{
+                pureValue = dataQueue.take();
+                fixData();
         } catch (InterruptedException e){
             e.printStackTrace();
         }
@@ -63,9 +84,37 @@ public class Data implements Runnable {
         // w tej klasie zrobic substringa, wycinajacego do \n - trzeba wycinac a nie przesylac z odgornie skróconym buforem
         // bo wtedy bufor moze byc za maly przy wartosciach bardzo wysokich
 
-        matrixData[rowIndex][columnIndex] = value;
+        if(matrixData[rowIndex][columnIndex] != value){
+            System.out.println(rowIndex + " " + columnIndex + " " + value);
+        }
+
+        matrixData[rowIndex][columnIndex] = value;// - calibrationMatrix[rowIndex][columnIndex];
 
         //System.out.println(matrixData[rowIndex][columnIndex]); //test
+        //System.out.println(rowIndex + " " + columnIndex + " " + value);
+
+        //calculateWeight(matrixData, c, K);
+        calculateWeight(matrixData, c1, K1);
+    }
+
+    //Calculate weight values form ADC 32param
+    void calculateWeight(int[][] adcValues, double[] c, double[] K){
+        for(int i = 0; i < 16; i++){    //column - for each column different calibrated parameters
+            for(int j = 0; j < 16; j++){    //row
+                double V = adcValues[j][i]*3.3/Math.pow(2,12);
+                weightData[j][i] = (int) Math.round(Math.pow(V/c[i], 1.0/K[i]));
+            }
+        }
+    }
+
+    //Calculate weight values form ADC 2param
+    void calculateWeight(int[][] adcValues, double c, double K){
+        for(int i = 0; i < 16; i++){    //column - for each column different calibrated parameters
+            for(int j = 0; j < 16; j++){    //row
+                double V = adcValues[j][i]*3.3/Math.pow(2,12);
+                weightData[j][i] = (int) Math.round(Math.pow(V/c, 1.0/K));
+            }
+        }
     }
 
     // saving data for external/later purpose
@@ -140,6 +189,36 @@ public class Data implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // calibration
+    int max = 0;
+    public void getCalibrationMatrix(){
+        int divider = 1;
+        LocalTime start = LocalTime.now();
+        while(Duration.between(start, LocalDateTime.now()).toMinutes() < 1){
+            for(int counter = 0; counter < 256; counter++){
+                receivePureData();
+            }
+
+            for(int i = 0; i < 16; i++){
+                for(int j = 0; j < 16; j++){
+                    if(matrixData[i][j] > max){
+                        max = matrixData[i][j];
+                    }
+                    if(matrixData[i][j] != 0){
+                        calibrationMatrix[i][j] = (matrixData[i][j]+calibrationMatrix[i][j])/divider;
+                    }
+                }
+            }
+
+            divider++;
+
+//            System.out.println(divider);
+//            System.out.println(Arrays.deepToString(calibrationMatrix));
+//            System.out.println(Arrays.deepToString(matrixData));
+        }
+        System.out.println("KONIEC KALIBRACJI");
     }
 
     // for sharing data to visualize it

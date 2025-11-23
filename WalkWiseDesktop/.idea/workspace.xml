@@ -5,24 +5,83 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0242b25d-43ac-478f-99a5-720022233a27" name="Changes" comment="Correction of searing for the specific bt device">
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-baby-footprint-50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-change-48.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-load-from-file-48.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-mat-64.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-menu-button-48.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-pressure-40.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/icons8-update-50.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/imagen-accidente-de-trabajo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Icons/walkwise-primary-logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/GUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/04-05-2025_10-59-24.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_18-49-22.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_18-53-03.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-11-58.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-14-41.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-15-34.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-17-55.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-22-55.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-27-37.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-30-14.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_19-30-59.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_21-17-59.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_21-21-00.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_22-25-05.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_22-38-24.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/08-05-2025_22-56-09.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_00-07-10.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_09-45-43.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_09-52-59.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_10-52-57.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_11-30-47.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_11-37-35.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_11-45-59.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_11-49-21.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_11-53-09.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_12-20-52.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/09-05-2025_14-45-10.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/12-06-2025_19-17-38.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/12-06-2025_20-08-20.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/13-05-2025_22-08-39.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/13-05-2025_22-14-45.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/13-05-2025_22-22-59.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/13-05-2025_22-26-39.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/13-05-2025_22-29-01.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/15-05-2025_18-44-49.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_07-56-29.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_08-30-31.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_08-41-13.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_09-07-35.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_09-22-11.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_10-28-12.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_10-52-23.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_11-15-51.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_12-05-35.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_14-04-20.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_14-23-26.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_14-33-21.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_15-22-10.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_15-41-29.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_16-54-21.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_17-16-42.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_17-36-17.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_17-46-09.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/16-05-2025_18-09-47.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/18-06-2025_19-38-44.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-05-2025_21-51-42(101).csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-05-2025_21-51-42(101).dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-05-2025_21-58-07(52).csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-05-2025_21-58-07(52).dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-05-2025_22-00-18(83).csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-05-2025_22-00-18(83).dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-06-2025_10-13-18.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-06-2025_10-22-46.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-06-2025_10-27-08.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-06-2025_10-30-23.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/19-06-2025_10-39-07.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Measurements/21-06-2025_20-51-10.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Measurements/10-04-2025_14-02-41.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Measurements/10-04-2025_14-49-30.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Measurements/10-04-2025_14-50-16.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Measurements/12-04-2025_12-22-51.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Measurements/29-04-2025_19-47-45.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Measurements/30-04-2025_15-02-58.dat" beforeDir="false" afterPath="$PROJECT_DIR$/Measurements/30-04-2025_15-02-58.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Data.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Visualization.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Visualization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,8 +132,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="module-info" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -95,34 +154,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Gradle.Build WalkWiseDesktop.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.WalkWiseDesktop [:Main.main()].executor": "Run",
-    "Gradle.WalkWiseDesktop [build].executor": "Debug",
-    "Gradle.WalkWiseDesktop.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "desktop",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/igorz/Downloads/TinyB",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.Build WalkWiseDesktop.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.WalkWiseDesktop [:Main.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.WalkWiseDesktop [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.WalkWiseDesktop.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;desktop&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/48794/Desktop/WalkWise/WalkWise/WalkWiseDesktop/src/main/java/org/example&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "PLAIN_TEXT"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;PLAIN_TEXT&quot;
     ]
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\48794\Desktop\WalkWise\WalkWise\WalkWiseDesktop\src\main\java\org\example" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
@@ -189,6 +253,18 @@
       <workItem from="1730379199309" duration="1157000" />
       <workItem from="1740553113288" duration="470000" />
       <workItem from="1740557944141" duration="4481000" />
+      <workItem from="1745440005317" duration="42758000" />
+      <workItem from="1745745551496" duration="28085000" />
+      <workItem from="1745946767066" duration="21469000" />
+      <workItem from="1746349033798" duration="5372000" />
+      <workItem from="1746710244718" duration="59690000" />
+      <workItem from="1747680114769" duration="9519000" />
+      <workItem from="1749743247142" duration="7194000" />
+      <workItem from="1750268248384" duration="18637000" />
+      <workItem from="1755986819451" duration="625000" />
+      <workItem from="1757448609430" duration="106000" />
+      <workItem from="1761751790775" duration="1542000" />
+      <workItem from="1762531633159" duration="1973000" />
     </task>
     <task id="LOCAL-00001" summary="scanning for available bluetooth devices">
       <option name="closed" value="true" />
@@ -220,6 +296,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="scanning for available bluetooth devices" />
@@ -230,131 +317,43 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>121</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>122</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>129</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>147</line>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>148</line>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>124</line>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>126</line>
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>134</line>
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>135</line>
-          <option name="timeStamp" value="50" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>137</line>
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>141</line>
-          <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>144</line>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>145</line>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>146</line>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>105</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="59" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>78</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>72</line>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>73</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
-          <line>75</line>
-          <option name="timeStamp" value="66" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-field">
           <url>file://$PROJECT_DIR$/src/main/java/org/example/Communication.java</url>
           <line>12</line>
           <properties field="availableDevices" class="org.example.Communication" />
           <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Data.java</url>
+          <line>20</line>
+          <properties field="calibrationMatrix" class="org.example.Data" />
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Data.java</url>
+          <line>30</line>
+          <properties field="matrixData" class="org.example.Data" />
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Data.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Data.java</url>
+          <line>198</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Data.java</url>
+          <line>214</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/Data.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
